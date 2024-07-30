@@ -10,6 +10,18 @@ const store = writable(
     sorting: "default",
     searchTerm: "",
     filterItem: "All categories",
+
+setFilterItem(item) {
+        this.filterItem = item;
+  },
+
+setSorting(item){
+ this.sorting = item.target.value;
+ },
+
+setSearchTerm(item){
+ this.searchTerm = item.target.value;
+ },
   
     sortProducts() {
       if (this.sorting !== "default") {
@@ -86,3 +98,5 @@ const store = writable(
   
   }
 )
+
+export default store
