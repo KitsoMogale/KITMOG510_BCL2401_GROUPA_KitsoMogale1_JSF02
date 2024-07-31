@@ -2,16 +2,12 @@
     import Ratings from "./Ratings.svelte";
     export let  product;
 
-//     const navigate = useNavigate();
 
-// const handleClick = () => {
-//   navigate(`/products/${id}`);
-// };
 
 </script>
 <div
 class="flex flex-col max-h-[130rem]  cursor-pointer max-w-80 hover:-translate-y-1 hover:scale-105 duration-300 bg-white border border-slate-200 shadow shadow-slate-950/5 rounded-2xl overflow-hidden"
->
+><a href='/#/productDetailView/{product.id}'>
 <img class="object-contain h-48 mt-3" src={product.image} alt="Course 01" />
 
 <div class="flex-1 flex flex-col p-6">
@@ -64,4 +60,5 @@ class="flex flex-col max-h-[130rem]  cursor-pointer max-w-80 hover:-translate-y-
     </div>
   </div>
 </div>
+</a>
 </div>

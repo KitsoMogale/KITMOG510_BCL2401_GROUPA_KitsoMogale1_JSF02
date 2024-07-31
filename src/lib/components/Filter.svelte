@@ -16,9 +16,10 @@ onMount(async () => {
 }
 
 initializeCategories();
- store.fetchProducts();
+
   
 });
+store.fetchProducts();
 
 
 const toggleDropdown = () => {

@@ -16,6 +16,7 @@ export const getCategories = async () => {
   };
   
   export const fetchSingleProduct = async (id) => {
+    console.log(id)
     try {
       const response = await fetch(`https://fakestoreapi.com/products/${id}`);
       if (!response.ok) {

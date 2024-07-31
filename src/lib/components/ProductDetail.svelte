@@ -1,6 +1,11 @@
 <script>
 
 export let  product;
+import { onMount } from "svelte";
+
+onMount(()=>{
+    console.log(product)
+})
 </script>
 
 

@@ -6,10 +6,7 @@
     import { onMount } from 'svelte';
     
 
-   onMount(async () => {
-    store.fetchProducts();
-    
-});
+
 
     const message = "Data fetching failed, please check your network connection1";
 </script>
