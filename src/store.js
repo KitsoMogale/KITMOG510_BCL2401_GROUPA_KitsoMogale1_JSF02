@@ -1,101 +1,110 @@
 import { writable } from "svelte/store";
 
-const store = writable(
-{
-
+function createStore() {
+  const { subscribe, set, update } = writable({
     products: [],
     originalProducts: [],
     loading: false,
     error: false,
     sorting: "default",
     searchTerm: "",
-    filterItem: "All categories",
+    filterItem: "All categories"
+  });
 
-setFilterItem(item) {
-        this.filterItem = item;
-  },
+  return {
+    subscribe,
 
-setSorting(item){
- this.sorting = item;
- },
+    setFilterItem: (item) => update(state => {
+      return { ...state, filterItem: item };
+    }),
 
-setSearchTerm(item){
- this.searchTerm = item;
- },
-  
-    sortProducts() {
-      if (this.sorting !== "default") {
-        
-          this.products= this.products.sort((a, b) =>
-            this.sorting === "low" ? a.price - b.price : b.price - a.price
-          )
-      } else {
-        const { originalProducts } = this;
-        this.products= JSON.parse(JSON.stringify(originalProducts))
-      }
-    },
-  
-    searchProducts() {
-      const  originalProducts  = this.products;
-      if (this.searchTerm.trim() !== "") {
-        const filteredProducts = originalProducts.filter((product) =>
-          product.title.toLowerCase().includes(this.searchTerm.toLowerCase())
+    setSorting: (item) => update(state => {
+      return { ...state, sorting: item };
+    }),
+
+    setSearchTerm: (item) => update(state => {
+      return { ...state, searchTerm: item };
+    }),
+
+    sortProducts: () => update(state => {
+      if (state.sorting !== "default") {
+        state.products = state.products.sort((a, b) =>
+          state.sorting === "low" ? a.price - b.price : b.price - a.price
         );
-          this.products= JSON.parse(JSON.stringify(filteredProducts));
-       
-      };
-    },
-  
-    async fetchProducts() {
-      if (this.filterItem != "All categories") {
-         
-        try {
-          this.loading = true;
-          const response = await fetch(
-            `https://fakestoreapi.com/products/category/${this.filterItem}`
-          );
-          if (!response.ok) {
-            throw new Error(
-              "Data fetching failed, please check your network connection"
-            );
-          }
-          const data = await response.json();
-          this.products = data,
-          this.originalProducts = JSON.parse(JSON.stringify(data)),
-          this.loading = false
-        }
-         catch (error) {
-          this.error = error 
-        } finally {
-          this.sortProducts();
-          this.searchProducts();
-        }
       } else {
-        try {
-          this.loading= true;
-          const response = await fetch(`https://fakestoreapi.com/products`);
-          if (!response.ok) {
-            throw new Error(
-              "Data fetching failed :( , please check your network connection and reload."
-            );
-          }
-          const data = await response.json();
-          
-            this.products=  data;
-            
-           this.originalProducts= JSON.parse(JSON.stringify(data));
-            this.loading= false;
-          
-        } catch (error) {
-          this.error= error
-        } finally {
-          this.sortProducts();
-          this.searchProducts();
-        }
+        state.products = JSON.parse(JSON.stringify(state.originalProducts));
       }
-    },
-  
-  }
-)
+      return { ...state };
+    }),
 
-export default store
+    searchProducts: () => update(state => {
+      if (state.searchTerm.trim() !== "") {
+        const filteredProducts = state.originalProducts.filter((product) =>
+          product.title.toLowerCase().includes(state.searchTerm.toLowerCase())
+        );
+        state.products = JSON.parse(JSON.stringify(filteredProducts));
+      }
+      return { ...state };
+    }),
+
+    fetchProducts: async () => {
+      update(state => ({ ...state, loading: true }));
+
+      try {
+        const state = await new Promise((resolve, reject) => {
+          update(state => {
+            resolve(state);
+            return state;
+          });
+        });
+
+        const response = await fetch(
+          state.filterItem !== "All categories" 
+            ? `https://fakestoreapi.com/products/category/${state.filterItem}`
+            : `https://fakestoreapi.com/products`
+        );
+
+        if (!response.ok) {
+          throw new Error(
+            "Data fetching failed, please check your network connection"
+          );
+        }
+
+        const data = await response.json();
+
+        update(state => {
+          state.products = data;
+          state.originalProducts = JSON.parse(JSON.stringify(data));
+          state.loading = false;
+          return { ...state };
+        });
+
+        // Call sorting and search after fetch
+        update(state => {
+          if (state.sorting !== "default") {
+          state.products = state.products.sort((a, b) =>
+            state.sorting === "low" ? a.price - b.price : b.price - a.price
+          );
+        }
+        else{
+          const { originalProducts } = state;
+          state.products= JSON.parse(JSON.stringify(originalProducts))
+        }
+          if (state.searchTerm.trim() !== "") {
+            const filteredProducts = state.originalProducts.filter((product) =>
+              product.title.toLowerCase().includes(state.searchTerm.toLowerCase())
+            );
+            state.products = JSON.parse(JSON.stringify(filteredProducts));
+          }
+
+          return { ...state };
+        });
+
+      } catch (error) {
+        update(state => ({ ...state, error, loading: false }));
+      }
+    }
+  };
+}
+
+export const store = createStore();

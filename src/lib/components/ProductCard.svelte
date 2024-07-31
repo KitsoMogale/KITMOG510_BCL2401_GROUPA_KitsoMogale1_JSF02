@@ -1,5 +1,5 @@
 <script>
-
+    import Ratings from "./Ratings.svelte";
     export let  product;
 
 //     const navigate = useNavigate();
@@ -24,7 +24,7 @@ class="flex flex-col max-h-[130rem]  cursor-pointer max-w-80 hover:-translate-y-
         </div>
       </h2>
     </header>
-    <!-- <Ratings {...rating} /> -->
+    <Ratings rating= {product.rating} />
     <div class="text-base line-clamp-2 font-extrabold text-slate-500 leading-snug">
       <h2>${product.price}</h2>
     </div>

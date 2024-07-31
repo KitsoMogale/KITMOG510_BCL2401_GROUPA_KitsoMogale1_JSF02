@@ -1,6 +1,6 @@
 <script>
  
-import store from '../../store.js'
+import {store} from '../../store.js'
 
      let sorting;
 
@@ -10,10 +10,10 @@ import store from '../../store.js'
 
 
       const handleSort = (event) => {
-        store.subscribe(value=>{
-        value.setSorting(event.target.value);
-        value.sortProducts();
-    })
+       
+        store.setSorting(event.target.value);
+        store.sortProducts();
+    
   };
 </script>
 
@@ -23,7 +23,7 @@ import store from '../../store.js'
     </label>
     <select
       on:change={(e)=>handleSort(e)}
-      value={sorting}
+      value={$store.sorting}
       name=""
       id="sort"
       class="p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
