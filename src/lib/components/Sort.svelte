@@ -22,7 +22,7 @@ import store from '../../store.js'
       Sort by:{" "}
     </label>
     <select
-      on:change={handleSort}
+      on:change={(e)=>handleSort(e)}
       value={sorting}
       name=""
       id="sort"

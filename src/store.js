@@ -16,11 +16,11 @@ setFilterItem(item) {
   },
 
 setSorting(item){
- this.sorting = item.target.value;
+ this.sorting = item;
  },
 
 setSearchTerm(item){
- this.searchTerm = item.target.value;
+ this.searchTerm = item;
  },
   
     sortProducts() {
@@ -61,7 +61,6 @@ setSearchTerm(item){
           }
           const data = await response.json();
           this.products = data,
-          console.log(this.products)
           this.originalProducts = JSON.parse(JSON.stringify(data)),
           this.loading = false
         }

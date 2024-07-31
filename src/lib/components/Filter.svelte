@@ -8,13 +8,15 @@ let categories;
 let iserror;
 
 let filterItem ;
-let searchTerm;
+let searchTerm  ;
 
 
-store.subscribe(value=>{
-        filterItem = value.filterItem;
-        searchTerm = value.searchTerm;
-    })
+
+$: store.subscribe(value => {
+      filterItem = value.filterItem;
+      searchTerm = value.searchTerm;
+    });
+  
 
 onMount(async () => {
     const initializeCategories = async () => {
@@ -25,8 +27,9 @@ onMount(async () => {
 
 initializeCategories();
  store.subscribe(value=>{value.fetchProducts();})
-
+  
 });
+
 
 const toggleDropdown = () => {
     const dropDown = document.getElementById("dropdown");
@@ -38,10 +41,12 @@ const toggleDropdown = () => {
   const handleFilter = (category) => {
     store.subscribe(value=>{
         value.setFilterItem(category);
+        console.log(value.filterItem)
+        filterItem = value.filterItem
     })
+
     
     document.getElementById("dropdown").classList.add("hidden");
-    store.subscribe(value=>{value.fetchProducts();})
   };
 
   const handleSearch = (event) => {
