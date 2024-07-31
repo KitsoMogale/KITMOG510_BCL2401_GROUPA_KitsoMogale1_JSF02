@@ -1,14 +1,16 @@
 <script>
   import Header from "./lib/components/Header.svelte";
-  import Filter from "./lib/components/Filter.svelte";
-  import Sort from "./lib/components/Sort.svelte";
-  import ProductList from "./lib/components/ProductList.svelte";
+  import Router, {location, link} from 'svelte-spa-router';
+  import Home from "./pages/Home.svelte";
+    import Login from "./pages/Login.svelte";
+    import ProductDetailView from "./pages/ProductDetailView.svelte";
 </script>
 <main>
   <Header/>
-  <div class="grid lg:flex gap-y-4 gap-x-48 lg:items-start  mt-3 mx-auto justify-center">
-    <Filter />
-    <Sort />
-  </div>
-  <ProductList/>
+  <Router   routes={{
+    '/': Home,
+    '/login': Login,
+    '/productDetailView/:id' : ProductDetailView
+  }}/>
+
 </main>

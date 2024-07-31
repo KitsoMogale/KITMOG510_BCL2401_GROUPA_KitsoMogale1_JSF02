@@ -1,0 +1,13 @@
+<script>
+
+    import Filter from "../lib/components/Filter.svelte";
+    import Sort from "../lib/components/Sort.svelte";
+    import ProductList from "../lib/components/ProductList.svelte";
+
+</script>
+
+<div class="grid lg:flex gap-y-4 gap-x-48 lg:items-start  mt-3 mx-auto justify-center">
+    <Filter />
+    <Sort />
+  </div>
+  <ProductList/>
